@@ -12,7 +12,8 @@ def make_request(url):
     return r
 
 
-def test_hello_world(url):
+def test_hello_world():
+    url = "http://localhost"
     request = make_request(url)
     assert request != None
     assert request.status_code == 200
@@ -20,7 +21,6 @@ def test_hello_world(url):
 
 
 def main():
-    url = "http://localhost"
     test_hello_world(url)
 
 
