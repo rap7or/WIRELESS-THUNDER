@@ -1,0 +1,18 @@
+language: python
+python:
+ - "3.6"
+
+sudo: required
+
+services:
+  - docker
+
+install:
+  - sudo docker pull httpd:2.4
+  - pip install -r requirements
+  - sudo docker compose build
+  - sudo docker compose up
+  - while ! (curl -k ---silent --head http://localhost); do sleep 1; done
+
+script:
+  - pytest test/test.py
