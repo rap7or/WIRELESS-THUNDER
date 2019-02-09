@@ -1,0 +1,17 @@
+·        What is the URL of your Github project?
+	https://github.com/rap7or22/WIRELESS-THUNDER
+
+·        How did you breakup your projects and what are the security ramifications?
+We broke up the projects by activities. By doing this it opens up the security ramifications of only focusing on one thing and not thinking ahead. This can cause gaps in the security between projects. 
+
+·        How did you choose to break down your Epic into various issues (tasks)?
+We break down the Epic into as many small issues as possible without causing issues with completion and cohesiveness. By doing this it makes the Epic more manageable as a whole and allows us to not be overwhelmed by one single task.
+
+·        How long did you assign each sprint to be?
+Each sprint has a week to two weeks depending on the complexity of the sprint.
+
+·        Did you deviate from the Agile methodology at all? If yes, what is your reasoning for this?
+We did not deviate from the Agile methodology since it was the best method to organize our application.
+
+·        How do you ensure that after each issue/milestone that security has been verified? How    would you identify such issues in an ideal environment?
+After completing an issue we will test our application by creating test cases and using them against our own code. In an ideal environment we would be able to use industry tools, such as AppSpider,  to use for test cases to ensure that the application is secure. 
