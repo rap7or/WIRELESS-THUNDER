@@ -1,0 +1,5 @@
+·        What Web Application security mechanisms are involved in your topology? What security mechanisms would ideally be involved?
+	The main security mechanisms that will be in our Web Application are authentication, accessibility, and compatibility. The ideal security mechanisms that should be in place would be ours as well as, implement priority buckets, implement firewalls within the topology, and monitoring. 
+
+·        What testing framework did you choose and why?
+	We chose to use the pytest framework. We believe this to be the best current framework for our use cases. It allows for more compact testing code, contains minimal boilerplate code, and has been suggested by the professor for the course.
