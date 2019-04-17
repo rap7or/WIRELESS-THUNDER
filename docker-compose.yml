@@ -1,6 +1,33 @@
-version: '3'
+version: "3.6"
 services:
-  apache:
-    build: webserver/
-    ports:
-      - "80:80"
+    web:
+      build: ./web/
+      ports:
+        - "80:80"
+        - "443:443"
+      depends_on:
+        - python
+      links:
+        - python
+
+    python:
+      build: ./python
+      volumes:
+        - ./my_application:/opt/src/my_application:z
+      ports:
+        - "5000:5000"
+      environment:
+        - "DATABASE_URL=mysql+pymysql://root:password-123@database:3306/webProject"
+        - "FLASK_APP=my_application/web_project.py"
+        - "FLASK_RUN_HOST=0.0.0.0"
+        - "FLASK_ENV = development"
+      depends_on:
+        - database
+      links:
+        - database
+
+    database:
+      image: mysql:5.6
+      environment:
+        - MYSQL_ROOT_PASSWORD=password-123
+        - MYSQL_DATABASE=webProject

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block navbar %}
+    <li class="nav-item">
+        <a class="nav-link" href="register">Register</a>
+    </li>
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="/static/login_page.css"/>
+{% endblock style %}
+
+{% block content %}
+  <div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div>
+      <img src="/static/user.png" id="icon" alt="User Icon" />
+    </div>
+
+    <!-- Login Form -->
+    <form>
+        <label for="username"></label><input type="text" id="username" class="fadeIn second" name="username" placeholder="username">
+        <label for="password"></label><input type="password" id="password" class="fadeIn second" name="password" placeholder="password">
+        <input type="submit" class="fadeIn third" value="Log In" formmethod="post" formaction="/login">
+    </form>
+
+    <!-- Remind Password -->
+    <div id="formFooter">
+      <a class="underlineHover" href="/register">Don't have an account? Register</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
