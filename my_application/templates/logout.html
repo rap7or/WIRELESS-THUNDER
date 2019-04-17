@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Logout{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="/static/login_page.css"/>
+{% endblock style %}
+
+{% block content %}
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <!-- Login Form -->
+            <form>
+                <span>Are you sure you would like to logout?</span>
+                <input type="submit" value="Confirm" formmethod="POST" formaction="/logout">
+            </form>
+        </div>
+    </div>
+{% endblock %}
