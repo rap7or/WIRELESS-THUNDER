@@ -12,10 +12,13 @@
 {% endblock style %}
 
 {% block content %}
-    <h2>Thank you for registering!</h2>
     <div class="wrapper fadeInDown">
+
         <div id="formContent">
             <!-- Login Form -->
+            <div id="message">
+                <p>Please fill out the following fields and submit to complete your registration</p>
+            </div>
             <form>
                 <label for="username"></label><input type="text" id="username" class="fadeIn second" name="username" placeholder="username">
                 <label for="password"></label><input type="password" id="password" class="fadeIn second" name="password" placeholder="password">

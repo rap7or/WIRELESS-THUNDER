@@ -1,9 +1,7 @@
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from datetime import datetime
 from bcrypt import hashpw, checkpw, gensalt
-
-db = SQLAlchemy()
+from my_application.models import db
 
 
 class User(UserMixin, db.Model):
@@ -49,4 +47,4 @@ class User(UserMixin, db.Model):
         User.set_password(self, password)
 
     def __repr__(self):
-        return "<User '{}'".format(self.username)
+        return "<User '{}'>".format(self.username)
