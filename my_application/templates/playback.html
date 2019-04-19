@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Playback{% endblock %}
+
+{% block navbar %}
+    <li class="nav-item">
+        <a class="nav-link" href="/upload">Upload video</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <video width="640" controls>
+  <source src="/static/uploads/{{ video }}" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+{% endblock content%}

@@ -1,9 +1,7 @@
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from datetime import datetime
 from bcrypt import hashpw, checkpw, gensalt
-
-db = SQLAlchemy()
+from my_application.models import db
 
 
 class User(UserMixin, db.Model):
@@ -15,6 +13,8 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(255), index=True, unique=True, nullable=False)
     cookie = db.Column(db.String(255))
     cookie_expiration = db.Column(db.DateTime(), nullable=False, default=datetime.now())
+    failure = db.Column(db.Integer, nullable=False)
+    failure_timeout = db.Column(db.DateTime(), default=datetime.now())
 
     def is_active(self):
         return True
@@ -47,6 +47,8 @@ class User(UserMixin, db.Model):
     def __init__(self, username, password):
         self.username = username
         User.set_password(self, password)
+        self.failure = 0
+        self.failure_timeout = datetime.now()
 
     def __repr__(self):
-        return "<User '{}'".format(self.username)
+        return "<User '{}'>".format(self.username)
