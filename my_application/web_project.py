@@ -2,7 +2,7 @@
 
 import os
 
-from flask import Flask, render_template, flash, request, redirect, make_response
+from flask import Flask, render_template, flash, request, redirect, make_response, url_for
 from flask_login import LoginManager
 from werkzeug.utils import secure_filename
 from secrets import token_urlsafe
@@ -10,11 +10,12 @@ from my_application.models import db
 from my_application.models.users import User
 from my_application.models.videos import Video
 from datetime import datetime, timedelta
+from pymysql import err
 from .config import DevelopmentConfig
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 ALLOWED_EXTENSIONS = {'mp4', 'flv'}
-UPLOAD_DIR = os.path.join(BASE_DIR, 'uploads')
+UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'uploads')
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig())
@@ -55,12 +56,25 @@ def login():
     return render_template("login.html")
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def home():
     if request.method == 'GET':
         user = authenticate_session()
         if user is not None:
-            return render_template('home.html')
+            if request.query_string:
+                search_string = request.query_string
+                search_string = str(search_string).rsplit('=')[1].replace('\'', '')
+                try:
+                    videos = Video.query.filter(Video.video_title.ilike("%{}%".format(search_string)))
+                except Exception as e:
+                    print(e)
+                    with db.engine.connect() as con:
+                        rs = con.execute('ALTER TABLE video ADD FULLTEXT(video_title);')
+                        print(rs)
+                    videos = Video.query.filter(Video.video_title.ilike("%{}%".format(search_string))).all()
+            else:
+                videos = Video.query.all()
+            return render_template('home.html', videos=videos)
         return redirect('/login')
 
 
@@ -120,6 +134,13 @@ def upload_file():
             return render_template('upload.html')
 
     return redirect("/login")
+
+
+@app.route('/playback/<video>', methods=['GET'])
+def playback(video):
+    user = authenticate_session()
+    if user is not None:
+        return render_template('playback.html', video=video)
 
 
 def allowed_filetype(filename):

@@ -5,7 +5,7 @@
     <title>{% block title %}{% endblock %}</title>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="shortcut icon" href="#" />
+        <link rel="shortcut icon" href="/" />
         {% block style %}{% endblock style %}
 </head>
 <body style="background-color:#f1f1f1">
@@ -18,14 +18,10 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
                   <li class="nav-item active">
-                      <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                      <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                   </li>
                   {% block navbar %}{% endblock navbar %}
           </ul>
-{#          <form class="form-inline my-2 my-lg-0">#}
-{#            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
-{#            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
-{#          </form>#}
         </div>
       </nav>
   </header>

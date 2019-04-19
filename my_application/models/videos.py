@@ -6,11 +6,11 @@ from my_application.models import db
 class Video(UserMixin, db.Model):
     __tablename__ = 'video'
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, index=True, autoincrement=True)
     video_title = db.Column(db.String(255), index=True, unique=False, nullable=False)
     video_loc = db.Column(db.String(255), index=True, unique=True, nullable=False)
-    user_id = db.Column(db.ForeignKey('user.id'), nullable=False)
-    upload_time = db.Column(db.DateTime, nullable=False)
+    user_id = db.Column(db.ForeignKey('user.id'), index=True, nullable=False)
+    upload_time = db.Column(db.DateTime, index=True, nullable=False)
 
     def __init__(self, user, video_title, video_loc):
         self.user_id = user.id

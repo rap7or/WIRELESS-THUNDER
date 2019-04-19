@@ -6,11 +6,39 @@
         <a class="nav-link" href="/upload">Upload video</a>
     </li>
 
-    <li class="nav-item">
+
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search_string" placeholder="Search" aria-label="Search" name="search_string">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" formaction="/" formmethod="get">Search</button>
+      </form>
+
+    <li class="navbar-right">
         <a class="nav-link" href="/logout">Logout</a>
     </li>
 {% endblock %}
 
+{% block style %}
+
+{% endblock style %}
+
 {% block content %}
-<h1>You have logged in!</h1>
+
+{#    {% from "_formhelpers.html" import render_field %}#}
+{#<form method=post action="/search">#}
+{#  <dl>#}
+{#    {{ render_field(form.username) }}#}
+{#  </dl>#}
+{#  <p><input type=submit value=Search>#}
+{#</form>#}
+    <ul>
+        {% for video in videos %}
+            <li>
+                <h3 style="margin-top:5px">
+                    <a href="{{ url_for('playback', video=video.video_loc ) }}">
+                        <p>Title: {{ video.video_title }}</p>
+                    </a>
+                </h3>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock content%}
