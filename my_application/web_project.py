@@ -1,6 +1,7 @@
 #!/bin/python
 
 import os
+import urllib.request
 
 from flask import Flask, render_template, flash, request, redirect, make_response, url_for
 from flask_login import LoginManager
@@ -10,7 +11,6 @@ from my_application.models import db
 from my_application.models.users import User
 from my_application.models.videos import Video
 from datetime import datetime, timedelta
-from pymysql import err
 from .config import DevelopmentConfig
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -46,12 +46,26 @@ def login():
         password = request.form['password']
         user = User.query.filter(User.username == username).first()
         if user is not None:
+            if user.failure_timeout > datetime.now():
+                flash("You are locked out")
+                return redirect("/login")
             if user.check_password(password):
                 cookie = update_session(user)
-                resp = make_response(render_template('home.html'))
+                user.failure_timeout = datetime.now()
+                user.failure = 0
+                db.session.add(user)
+                db.session.commit()
+                resp = make_response(redirect('/'))
                 resp.set_cookie('session_cookie', cookie)
                 resp.set_cookie('user', "{}".format(user.id))
                 return resp
+            else:
+                user.failure += 1
+                if user.failure > 5:
+                    user.failure = 0
+                    user.failure_timeout = datetime.now() + timedelta(seconds=120)
+                db.session.add(user)
+                db.session.commit()
 
     return render_template("login.html")
 
@@ -132,6 +146,51 @@ def upload_file():
         user = authenticate_session()
         if user is not None:
             return render_template('upload.html')
+
+    return redirect("/login")
+
+
+@app.route('/download', methods=['POST', 'GET'])
+def download_file():
+    if request.method == 'POST':
+        user = authenticate_session()
+        if user is not None:
+            if 'filename' not in request.form:
+                flash('No filename')
+                return redirect(request.url)
+            filename = request.form['filename']
+            if filename == '':
+                flash('No filename')
+                return redirect(request.url)
+            if 'url' not in request.form:
+                flash('No URL')
+                return redirect(request.url)
+            url = request.form['url']
+            if 'url' == '':
+                flash('No URL')
+                return redirect(request.url)
+            if not allowed_filetype(filename):
+                return redirect('/')
+            filename = secure_filename(filename)
+            title = filename.rsplit('.', 1)[0]
+            unique_name = unique_filename(filename)
+            try:
+                full_path = os.path.join(BASE_DIR, 'static', 'uploads', unique_name)
+                urllib.request.urlretrieve(url, filename=full_path)
+            except Exception as e:
+                print(e)
+                return redirect('/')
+
+            video_obj = Video(user, title, unique_name)
+            db.session.add(video_obj)
+            db.session.commit()
+            flash('File successfully uploaded')
+            return redirect('/')
+
+    elif request.method == 'GET':
+        user = authenticate_session()
+        if user is not None:
+            return render_template('transfer_from_external_server.html')
 
     return redirect("/login")
 
