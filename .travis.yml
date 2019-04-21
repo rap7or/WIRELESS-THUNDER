@@ -9,7 +9,6 @@ services:
 
 install:
   - sudo docker pull httpd:2.4
-  - pip install -r requirements.txt
   - sudo docker-compose build
   - sudo docker-compose up &
   - while ! (curl -k --silent --head http://localhost); do sleep 1; done
