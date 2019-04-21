@@ -13,7 +13,13 @@
 
 {% block content %}
     <video width="640" controls>
-  <source src="/static/uploads/{{ video }}" type="video/mp4">
-  Your browser does not support HTML5 video.
-</video>
+    <source src="/static/uploads/{{ video.video_loc }}" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    {% if  user == video.user_id %}
+        <form method=post action="{{ url_for('playback', video=video.id ) }}">
+            <button class="btn btn-success" type="submit">Delete Video</button>
+        </form>
+    {% endif %}
+
 {% endblock content%}

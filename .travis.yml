@@ -13,6 +13,7 @@ install:
   - sudo docker-compose build
   - sudo docker-compose up &
   - while ! (curl -k --silent --head http://localhost); do sleep 1; done
+  - sleep 10
 
 script:
   - pytest test/test.py

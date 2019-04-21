@@ -66,6 +66,7 @@ def login():
                     user.failure_timeout = datetime.now() + timedelta(seconds=120)
                 db.session.add(user)
                 db.session.commit()
+        flash('Incorrect username or password')
 
     return render_template("login.html")
 
@@ -191,15 +192,30 @@ def download_file():
         user = authenticate_session()
         if user is not None:
             return render_template('transfer_from_external_server.html')
-
     return redirect("/login")
 
 
-@app.route('/playback/<video>', methods=['GET'])
+@app.route('/playback/<video>', methods=['GET', 'POST'])
 def playback(video):
     user = authenticate_session()
     if user is not None:
-        return render_template('playback.html', video=video)
+        video_obj = Video.query.filter(Video.id == video).first()
+        if video_obj is None:
+            flash("Video not found!")
+            return redirect('/')
+        if request.method == 'POST':
+            if video_obj.user_id == int(request.cookies['user']):
+                db.session.delete(video_obj)
+                db.session.commit()
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], video_obj.video_loc))
+                flash("Video successfully deleted")
+                return redirect('/')
+            else:
+                flash("You do not have permissions to delete this video!")
+                return render_template('playback.html', video=video_obj, user=int(request.cookies['user']))
+        elif request.method == 'GET':
+            return render_template('playback.html', video=video_obj, user=int(request.cookies['user']))
+    return redirect("/login")
 
 
 def allowed_filetype(filename):
