@@ -1,4 +1,4 @@
-version: "3.6"
+version: "3"
 services:
     web:
       build: ./web/
@@ -23,6 +23,7 @@ services:
         - "FLASK_ENV = development"
       depends_on:
         - database
+      restart: on-failure
       links:
         - database
 
