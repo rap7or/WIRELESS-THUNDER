@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 def make_request(url):
     try:
-        r = requests.get(url=url, timeout=10)
+        r = requests.get(url=url, timeout=10, verify=False)
     except Exception as e:
         print(e)
         return None
