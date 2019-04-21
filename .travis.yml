@@ -12,7 +12,7 @@ install:
   - pip install -r requirements.txt
   - sudo docker-compose build
   - sudo docker-compose up &
-  - while ! (curl -k --silent --head http://localhost); do sleep 1; done
+  - while ! (curl -k --silent --head http://localhost:5000); do sleep 1; done
   - sleep 10
 
 script:

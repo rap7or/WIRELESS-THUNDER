@@ -171,6 +171,7 @@ def download_file():
                 flash('No URL')
                 return redirect(request.url)
             if not allowed_filetype(filename):
+                flash('This was not an allowed filetype. Make sure the filename ends with .mp4 or another supported filetype.')
                 return redirect('/')
             filename = secure_filename(filename)
             title = filename.rsplit('.', 1)[0]
