@@ -25,23 +25,20 @@
 {% endblock style %}
 
 {% block content %}
-
-{#    {% from "_formhelpers.html" import render_field %}#}
-{#<form method=post action="/search">#}
-{#  <dl>#}
-{#    {{ render_field(form.username) }}#}
-{#  </dl>#}
-{#  <p><input type=submit value=Search>#}
-{#</form>#}
-    <ul>
-        {% for video in videos %}
-            <li>
-                <h3 style="margin-top:5px">
-                    <a href="{{ url_for('playback', video=video.video_loc ) }}">
-                        <p>Title: {{ video.video_title }}</p>
-                    </a>
-                </h3>
-            </li>
-        {% endfor %}
-    </ul>
+    <h2>Videos</h2>
+    <table  class="table">
+    {% for video in videos %}
+        <tr>
+            <th class="container">
+                <div class="text-primary">{{ video.video_title }}</div>
+            </th>
+            <th class="text-info">Owner: {{ video.user_id }}</th>
+            <th class="container">
+                <form method=get action="{{ url_for('playback', video=video.id ) }}">
+                    <button class="btn btn-success" type="submit">Watch now!</button>
+                </form>
+            </th>
+        </tr>
+    {% endfor %}
+    </table>
 {% endblock content%}
