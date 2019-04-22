@@ -80,6 +80,8 @@ def home():
                 search_string = request.query_string
                 search_string = str(search_string).rsplit('=')[1].replace('\'', '')
                 try:
+                    with db.engine.connect() as con:
+                        videos = con.execute('SELECT * FROM video WHERE video_title like %' + search_string + '%;')
                     videos = Video.query.filter(Video.video_title.ilike("%{}%".format(search_string)))
                 except Exception as e:
                     print(e)
